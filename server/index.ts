@@ -63,5 +63,13 @@ export function createServer() {
   app.get("/api/chatbot/capabilities", getBotCapabilities);
   app.post("/api/chatbot/feedback", submitFeedback);
 
+  // Blockchain API Routes
+  app.post("/api/blockchain/add", addToBlockchain);
+  app.get("/api/blockchain", getBlockchain);
+  app.get("/api/blockchain/block/:blockHash", getBlock);
+  app.get("/api/blockchain/validate", validateChain);
+  app.get("/api/blockchain/stats", getBlockchainStats);
+  app.get("/api/blockchain/export", exportBlockchain);
+
   return app;
 }
