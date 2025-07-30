@@ -35,8 +35,25 @@ export function createServer() {
     const ping = process.env.PING_MESSAGE ?? "ping";
     res.json({ message: ping });
   });
-
   app.get("/api/demo", handleDemo);
+
+  // Fraud Detection API Routes
+  app.get("/api/transactions", getTransactions);
+  app.post("/api/transactions/block", blockTransaction);
+  app.post("/api/transactions/approve", approveTransaction);
+  app.get("/api/analytics", getFraudAnalytics);
+  app.post("/api/transactions/simulate", simulateTransaction);
+
+  // SMTP Email API Routes
+  app.post("/api/email/send", sendEmail);
+  app.post("/api/email/otp", sendOTP);
+  app.post("/api/email/fraud-alert", sendFraudAlert);
+  app.get("/api/email/test-smtp", testSMTP);
+
+  // AI Chatbot API Routes
+  app.post("/api/chatbot/message", chatWithBot);
+  app.get("/api/chatbot/capabilities", getBotCapabilities);
+  app.post("/api/chatbot/feedback", submitFeedback);
 
   return app;
 }
