@@ -224,24 +224,52 @@ export default function Index() {
   const handleApproveTransaction = async (transactionId: string) => {
     setLoading(true);
     try {
+      const transaction = transactions.find(t => t.id === transactionId);
+      if (!transaction) return;
+
       const response = await fetch('/api/transactions/approve', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ transactionId })
       });
-      
+
       const data = await response.json();
       if (data.success) {
-        setTransactions(prev => 
+        setTransactions(prev =>
           prev.map(t => t.id === transactionId ? { ...t, status: 'safe' as const } : t)
         );
         setAlertCount(prev => Math.max(0, prev - 1));
+
+        // Add to blockchain
+        await addToBlockchain(transactionId, 'approve', transaction, "User approved transaction");
+
         fetchAnalytics();
       }
     } catch (error) {
       console.error('Failed to approve transaction:', error);
     }
     setLoading(false);
+  };
+
+  const addToBlockchain = async (transactionId: string, action: string, transaction: Transaction, reason: string) => {
+    try {
+      await fetch('/api/blockchain/add', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          transactionId,
+          action,
+          amount: transaction.amount,
+          merchant: transaction.merchant,
+          location: transaction.location,
+          riskScore: transaction.riskScore,
+          reason,
+          userAction: `Transaction ${action}ed by user`
+        })
+      });
+    } catch (error) {
+      console.error('Failed to add to blockchain:', error);
+    }
   };
 
   const sendFraudAlert = async (transactionId: string, reason: string) => {
