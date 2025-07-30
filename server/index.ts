@@ -21,6 +21,14 @@ import {
   getBotCapabilities,
   submitFeedback
 } from "./routes/chatbot";
+import {
+  addToBlockchain,
+  getBlockchain,
+  getBlock,
+  validateChain,
+  getBlockchainStats,
+  exportBlockchain
+} from "./routes/blockchain";
 
 export function createServer() {
   const app = express();
