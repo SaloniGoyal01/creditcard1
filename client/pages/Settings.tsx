@@ -20,7 +20,7 @@ import {
   Download,
   CheckCircle,
   AlertTriangle,
-  Chain,
+  Link as Chain,
   Activity,
   BarChart3,
   Database,
