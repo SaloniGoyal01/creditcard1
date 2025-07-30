@@ -418,10 +418,10 @@ export default function Index() {
                 {loading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Mail className="h-4 w-4 mr-2" />}
                 Test SMTP
               </Button>
-              <Link to="/profile">
+              <Link to="/settings">
                 <Button variant="outline" size="sm" className="border-neon-purple text-neon-purple hover:bg-neon-purple hover:text-background">
                   <Settings className="h-4 w-4 mr-2" />
-                  Profile
+                  Settings
                 </Button>
               </Link>
               <Link to="/login">
