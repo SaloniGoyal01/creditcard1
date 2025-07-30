@@ -7,7 +7,7 @@ import {
   User, 
   Smartphone, 
   Fingerprint, 
-  Voice,
+  VolumeX as Voice,
   MapPin,
   CreditCard,
   Settings,
