@@ -75,6 +75,14 @@ export default {
           "secondary": "hsl(var(--security-secondary))",
           "accent": "hsl(var(--security-accent))",
         },
+        neon: {
+          "cyan": "hsl(var(--neon-cyan))",
+          "purple": "hsl(var(--neon-purple))",
+          "green": "hsl(var(--neon-green))",
+          "pink": "hsl(var(--neon-pink))",
+          "yellow": "hsl(var(--neon-yellow))",
+          "red": "hsl(var(--neon-red))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
