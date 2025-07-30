@@ -2,6 +2,25 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
+// Fraud detection routes
+import {
+  getTransactions,
+  blockTransaction,
+  approveTransaction,
+  getFraudAnalytics,
+  simulateTransaction
+} from "./routes/fraud";
+import {
+  sendEmail,
+  sendOTP,
+  sendFraudAlert,
+  testSMTP
+} from "./routes/smtp";
+import {
+  chatWithBot,
+  getBotCapabilities,
+  submitFeedback
+} from "./routes/chatbot";
 
 export function createServer() {
   const app = express();
