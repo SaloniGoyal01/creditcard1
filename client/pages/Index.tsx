@@ -187,6 +187,9 @@ export default function Index() {
   const handleBlockTransaction = async (transactionId: string, reason: string = "High risk score detected") => {
     setLoading(true);
     try {
+      const transaction = transactions.find(t => t.id === transactionId);
+      if (!transaction) return;
+
       const response = await fetch('/api/transactions/block', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -196,16 +199,19 @@ export default function Index() {
           userEmail: "user@example.com"
         })
       });
-      
+
       const data = await response.json();
       if (data.success) {
-        setTransactions(prev => 
+        setTransactions(prev =>
           prev.map(t => t.id === transactionId ? { ...t, status: 'blocked' as const } : t)
         );
-        
+
+        // Add to blockchain
+        await addToBlockchain(transactionId, 'block', transaction, reason);
+
         // Send fraud alert email
         await sendFraudAlert(transactionId, reason);
-        
+
         // Update analytics
         fetchAnalytics();
       }
