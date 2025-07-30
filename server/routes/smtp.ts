@@ -4,7 +4,7 @@ interface EmailRequest {
   to: string;
   subject: string;
   message: string;
-  type?: 'fraud-alert' | 'otp' | 'notification';
+  type?: "fraud-alert" | "otp" | "notification";
 }
 
 interface OTPRequest {
@@ -13,15 +13,20 @@ interface OTPRequest {
 
 // Simulate SMTP email sending
 export const sendEmail: RequestHandler = (req, res) => {
-  const { to, subject, message, type = 'notification' } = req.body as EmailRequest;
-  
+  const {
+    to,
+    subject,
+    message,
+    type = "notification",
+  } = req.body as EmailRequest;
+
   if (!to || !subject || !message) {
     return res.status(400).json({
       success: false,
-      message: "Missing required fields: to, subject, message"
+      message: "Missing required fields: to, subject, message",
     });
   }
-  
+
   // Simulate email sending process
   console.log("📧 SMTP EMAIL SIMULATION 📧");
   console.log("=".repeat(50));
@@ -33,7 +38,7 @@ export const sendEmail: RequestHandler = (req, res) => {
   console.log(message);
   console.log("=".repeat(50));
   console.log("✅ Email sent successfully (simulated)");
-  
+
   // Simulate delivery delay
   setTimeout(() => {
     res.json({
@@ -41,7 +46,7 @@ export const sendEmail: RequestHandler = (req, res) => {
       message: "Email sent successfully",
       emailId: `email_${Math.random().toString(36).substr(2, 9)}`,
       timestamp: new Date().toISOString(),
-      delivered: true
+      delivered: true,
     });
   }, 1000);
 };
@@ -49,17 +54,17 @@ export const sendEmail: RequestHandler = (req, res) => {
 // Send OTP email
 export const sendOTP: RequestHandler = (req, res) => {
   const { email } = req.body as OTPRequest;
-  
+
   if (!email) {
     return res.status(400).json({
       success: false,
-      message: "Email is required"
+      message: "Email is required",
     });
   }
-  
+
   // Generate 6-digit OTP
   const otp = Math.floor(100000 + Math.random() * 900000).toString();
-  
+
   const emailBody = `
     <h2>🔐 FraudGuard AI - Login Verification</h2>
     <p>Your One-Time Password (OTP) for secure login:</p>
@@ -71,7 +76,7 @@ export const sendOTP: RequestHandler = (req, res) => {
     <br>
     <p>Best regards,<br>FraudGuard AI Security Team</p>
   `;
-  
+
   // Simulate SMTP sending
   console.log("📧 OTP EMAIL SIMULATION 📧");
   console.log("=".repeat(50));
@@ -82,7 +87,7 @@ export const sendOTP: RequestHandler = (req, res) => {
   console.log("HTML Body:", emailBody);
   console.log("=".repeat(50));
   console.log("✅ OTP Email sent successfully (simulated)");
-  
+
   res.json({
     success: true,
     message: "OTP email sent successfully",
@@ -91,22 +96,22 @@ export const sendOTP: RequestHandler = (req, res) => {
     // This is only for demo purposes
     otp: "123456", // Demo OTP for testing
     expiresIn: 300, // 5 minutes
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   });
 };
 
 // Send fraud alert email
 export const sendFraudAlert: RequestHandler = (req, res) => {
-  const { 
-    email, 
-    transactionId, 
-    amount, 
-    merchant, 
-    location, 
+  const {
+    email,
+    transactionId,
+    amount,
+    merchant,
+    location,
     riskScore,
-    reason 
+    reason,
   } = req.body;
-  
+
   const alertEmail = `
     <div style="background: #1a1a1a; color: #ffffff; padding: 20px; font-family: Arial, sans-serif;">
       <h1 style="color: #ff4444; text-align: center;">🚨 FRAUD ALERT 🚨</h1>
@@ -133,7 +138,7 @@ export const sendFraudAlert: RequestHandler = (req, res) => {
           </tr>
           <tr>
             <td><strong>Risk Score:</strong></td>
-            <td style="color: ${riskScore >= 80 ? '#ff4444' : riskScore >= 60 ? '#ffaa00' : '#44ff44'};">
+            <td style="color: ${riskScore >= 80 ? "#ff4444" : riskScore >= 60 ? "#ffaa00" : "#44ff44"};">
               ${riskScore}/100
             </td>
           </tr>
@@ -165,7 +170,7 @@ export const sendFraudAlert: RequestHandler = (req, res) => {
       </p>
     </div>
   `;
-  
+
   // Simulate SMTP sending
   console.log("🚨 FRAUD ALERT EMAIL SIMULATION 🚨");
   console.log("=".repeat(60));
@@ -176,13 +181,13 @@ export const sendFraudAlert: RequestHandler = (req, res) => {
   console.log("HTML Body Generated");
   console.log("=".repeat(60));
   console.log("✅ Fraud Alert Email sent successfully (simulated)");
-  
+
   res.json({
     success: true,
     message: "Fraud alert email sent successfully",
     alertId: `alert_${Math.random().toString(36).substr(2, 9)}`,
     timestamp: new Date().toISOString(),
-    recipientCount: 1
+    recipientCount: 1,
   });
 };
 
@@ -201,9 +206,9 @@ export const testSMTP: RequestHandler = (req, res) => {
         FraudGuard AI - Email System Test
       </p>
     `,
-    type: 'notification' as const
+    type: "notification" as const,
   };
-  
+
   // Simulate successful SMTP test
   console.log("🧪 SMTP TEST EMAIL SIMULATION 🧪");
   console.log("=".repeat(50));
@@ -213,7 +218,7 @@ export const testSMTP: RequestHandler = (req, res) => {
   console.log("Test Email Details:", testEmail);
   console.log("=".repeat(50));
   console.log("✅ SMTP Test completed successfully");
-  
+
   res.json({
     success: true,
     message: "SMTP test completed successfully",
@@ -221,12 +226,12 @@ export const testSMTP: RequestHandler = (req, res) => {
       server: "smtp.fraudguard-ai.com",
       port: 587,
       secure: true,
-      authenticated: true
+      authenticated: true,
     },
     testResult: {
       emailSent: true,
       deliveryTime: "< 2 seconds",
-      timestamp: new Date().toISOString()
-    }
+      timestamp: new Date().toISOString(),
+    },
   });
 };

@@ -8,18 +8,13 @@ import {
   blockTransaction,
   approveTransaction,
   getFraudAnalytics,
-  simulateTransaction
+  simulateTransaction,
 } from "./routes/fraud";
-import {
-  sendEmail,
-  sendOTP,
-  sendFraudAlert,
-  testSMTP
-} from "./routes/smtp";
+import { sendEmail, sendOTP, sendFraudAlert, testSMTP } from "./routes/smtp";
 import {
   chatWithBot,
   getBotCapabilities,
-  submitFeedback
+  submitFeedback,
 } from "./routes/chatbot";
 import {
   addToBlockchain,
@@ -27,7 +22,7 @@ import {
   getBlock,
   validateChain,
   getBlockchainStats,
-  exportBlockchain
+  exportBlockchain,
 } from "./routes/blockchain";
 
 export function createServer() {

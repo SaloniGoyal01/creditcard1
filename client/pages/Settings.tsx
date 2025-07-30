@@ -1,5 +1,11 @@
 import { useState, useEffect } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
@@ -8,11 +14,11 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Progress } from "@/components/ui/progress";
-import { 
-  Shield, 
-  Settings as SettingsIcon, 
-  Bell, 
-  Globe, 
+import {
+  Shield,
+  Settings as SettingsIcon,
+  Bell,
+  Globe,
   Smartphone,
   Mail,
   Lock,
@@ -34,7 +40,7 @@ import {
   Volume2,
   Zap,
   RefreshCw,
-  ExternalLink
+  ExternalLink,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -65,9 +71,9 @@ export default function Settings() {
     alertLanguage: "hindi",
     riskThreshold: 70,
     autoBlock: true,
-    darkMode: true
+    darkMode: true,
   });
-  
+
   const [blockchain, setBlockchain] = useState<BlockchainBlock[]>([]);
   const [blockchainStats, setBlockchainStats] = useState<any>(null);
   const [loading, setLoading] = useState(false);
@@ -80,37 +86,41 @@ export default function Settings() {
 
   const fetchBlockchain = async () => {
     try {
-      const response = await fetch('/api/blockchain');
+      const response = await fetch("/api/blockchain");
       const data = await response.json();
       if (data.success) {
         setBlockchain(data.blockchain.slice(0, 10)); // Show latest 10 blocks
         setChainValid(data.isValid);
       }
     } catch (error) {
-      console.error('Failed to fetch blockchain:', error);
+      console.error("Failed to fetch blockchain:", error);
     }
   };
 
   const fetchBlockchainStats = async () => {
     try {
-      const response = await fetch('/api/blockchain/stats');
+      const response = await fetch("/api/blockchain/stats");
       const data = await response.json();
       if (data.success) {
         setBlockchainStats(data.stats);
       }
     } catch (error) {
-      console.error('Failed to fetch blockchain stats:', error);
+      console.error("Failed to fetch blockchain stats:", error);
     }
   };
 
   const validateBlockchain = async () => {
     setLoading(true);
     try {
-      const response = await fetch('/api/blockchain/validate');
+      const response = await fetch("/api/blockchain/validate");
       const data = await response.json();
       if (data.success) {
         setChainValid(data.isValid);
-        alert(data.isValid ? "✅ Blockchain integrity verified!" : "❌ Blockchain validation failed!");
+        alert(
+          data.isValid
+            ? "✅ Blockchain integrity verified!"
+            : "❌ Blockchain validation failed!",
+        );
       }
     } catch (error) {
       alert("❌ Validation failed - Check console");
@@ -120,12 +130,12 @@ export default function Settings() {
 
   const exportBlockchain = async () => {
     try {
-      const response = await fetch('/api/blockchain/export');
+      const response = await fetch("/api/blockchain/export");
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
+      const a = document.createElement("a");
       a.href = url;
-      a.download = 'blockchain_export.json';
+      a.download = "blockchain_export.json";
       a.click();
       window.URL.revokeObjectURL(url);
     } catch (error) {
@@ -134,16 +144,21 @@ export default function Settings() {
   };
 
   const updateSetting = (key: string, value: any) => {
-    setSettings(prev => ({ ...prev, [key]: value }));
+    setSettings((prev) => ({ ...prev, [key]: value }));
   };
 
   const getBlockActionColor = (action: string) => {
     switch (action) {
-      case 'block': return 'text-neon-red';
-      case 'approve': return 'text-neon-green';
-      case 'flag': return 'text-neon-yellow';
-      case 'create': return 'text-neon-cyan';
-      default: return 'text-foreground';
+      case "block":
+        return "text-neon-red";
+      case "approve":
+        return "text-neon-green";
+      case "flag":
+        return "text-neon-yellow";
+      case "create":
+        return "text-neon-cyan";
+      default:
+        return "text-foreground";
     }
   };
 
@@ -155,17 +170,27 @@ export default function Settings() {
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-3">
               <Shield className="h-8 w-8 text-neon-cyan neon-glow" />
-              <h1 className="text-2xl font-bold text-neon-cyan animate-pulse-neon">Settings & Security</h1>
+              <h1 className="text-2xl font-bold text-neon-cyan animate-pulse-neon">
+                Settings & Security
+              </h1>
             </div>
             <div className="flex items-center space-x-4">
               <Link to="/">
-                <Button variant="outline" size="sm" className="border-neon-green text-neon-green hover:bg-neon-green hover:text-background">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="border-neon-green text-neon-green hover:bg-neon-green hover:text-background"
+                >
                   <Activity className="h-4 w-4 mr-2" />
                   Dashboard
                 </Button>
               </Link>
               <Link to="/profile">
-                <Button variant="outline" size="sm" className="border-neon-purple text-neon-purple hover:bg-neon-purple hover:text-background">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="border-neon-purple text-neon-purple hover:bg-neon-purple hover:text-background"
+                >
                   <SettingsIcon className="h-4 w-4 mr-2" />
                   Profile
                 </Button>
@@ -178,19 +203,34 @@ export default function Settings() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Tabs defaultValue="alerts" className="space-y-6">
           <TabsList className="grid w-full grid-cols-5 bg-card/50 backdrop-blur-sm">
-            <TabsTrigger value="alerts" className="data-[state=active]:bg-neon-cyan data-[state=active]:text-background">
+            <TabsTrigger
+              value="alerts"
+              className="data-[state=active]:bg-neon-cyan data-[state=active]:text-background"
+            >
               Alert Settings
             </TabsTrigger>
-            <TabsTrigger value="security" className="data-[state=active]:bg-neon-purple data-[state=active]:text-background">
+            <TabsTrigger
+              value="security"
+              className="data-[state=active]:bg-neon-purple data-[state=active]:text-background"
+            >
               Security
             </TabsTrigger>
-            <TabsTrigger value="preferences" className="data-[state=active]:bg-neon-green data-[state=active]:text-background">
+            <TabsTrigger
+              value="preferences"
+              className="data-[state=active]:bg-neon-green data-[state=active]:text-background"
+            >
               Preferences
             </TabsTrigger>
-            <TabsTrigger value="blockchain" className="data-[state=active]:bg-neon-yellow data-[state=active]:text-background">
+            <TabsTrigger
+              value="blockchain"
+              className="data-[state=active]:bg-neon-yellow data-[state=active]:text-background"
+            >
               Blockchain Logs
             </TabsTrigger>
-            <TabsTrigger value="system" className="data-[state=active]:bg-neon-pink data-[state=active]:text-background">
+            <TabsTrigger
+              value="system"
+              className="data-[state=active]:bg-neon-pink data-[state=active]:text-background"
+            >
               System
             </TabsTrigger>
           </TabsList>
@@ -217,10 +257,12 @@ export default function Settings() {
                     </div>
                     <Switch
                       checked={settings.emailAlerts}
-                      onCheckedChange={(checked) => updateSetting('emailAlerts', checked)}
+                      onCheckedChange={(checked) =>
+                        updateSetting("emailAlerts", checked)
+                      }
                     />
                   </div>
-                  
+
                   <div className="flex items-center justify-between">
                     <div className="space-y-0.5">
                       <Label className="text-base">WhatsApp Alerts</Label>
@@ -230,10 +272,12 @@ export default function Settings() {
                     </div>
                     <Switch
                       checked={settings.whatsappAlerts}
-                      onCheckedChange={(checked) => updateSetting('whatsappAlerts', checked)}
+                      onCheckedChange={(checked) =>
+                        updateSetting("whatsappAlerts", checked)
+                      }
                     />
                   </div>
-                  
+
                   <div className="flex items-center justify-between">
                     <div className="space-y-0.5">
                       <Label className="text-base">Voice Alerts</Label>
@@ -243,10 +287,12 @@ export default function Settings() {
                     </div>
                     <Switch
                       checked={settings.voiceAlerts}
-                      onCheckedChange={(checked) => updateSetting('voiceAlerts', checked)}
+                      onCheckedChange={(checked) =>
+                        updateSetting("voiceAlerts", checked)
+                      }
                     />
                   </div>
-                  
+
                   <div className="flex items-center justify-between">
                     <div className="space-y-0.5">
                       <Label className="text-base">Push Notifications</Label>
@@ -256,7 +302,9 @@ export default function Settings() {
                     </div>
                     <Switch
                       checked={settings.pushNotifications}
-                      onCheckedChange={(checked) => updateSetting('pushNotifications', checked)}
+                      onCheckedChange={(checked) =>
+                        updateSetting("pushNotifications", checked)
+                      }
                     />
                   </div>
                 </CardContent>
@@ -275,10 +323,12 @@ export default function Settings() {
                 <CardContent className="space-y-6">
                   <div className="space-y-2">
                     <Label>Alert Language</Label>
-                    <select 
+                    <select
                       className="w-full p-2 border border-border rounded-lg bg-background text-foreground"
                       value={settings.alertLanguage}
-                      onChange={(e) => updateSetting('alertLanguage', e.target.value)}
+                      onChange={(e) =>
+                        updateSetting("alertLanguage", e.target.value)
+                      }
                     >
                       <option value="english">English</option>
                       <option value="hindi">हिंदी (Hindi)</option>
@@ -288,15 +338,19 @@ export default function Settings() {
                       <option value="marathi">मराठी (Marathi)</option>
                     </select>
                   </div>
-                  
+
                   <div className="space-y-2">
-                    <Label>Risk Alert Threshold: {settings.riskThreshold}</Label>
+                    <Label>
+                      Risk Alert Threshold: {settings.riskThreshold}
+                    </Label>
                     <input
                       type="range"
                       min="0"
                       max="100"
                       value={settings.riskThreshold}
-                      onChange={(e) => updateSetting('riskThreshold', parseInt(e.target.value))}
+                      onChange={(e) =>
+                        updateSetting("riskThreshold", parseInt(e.target.value))
+                      }
                       className="w-full"
                     />
                     <div className="flex justify-between text-xs text-muted-foreground">
@@ -304,7 +358,7 @@ export default function Settings() {
                       <span>High Risk</span>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-center justify-between">
                     <div className="space-y-0.5">
                       <Label className="text-base">Auto-block High Risk</Label>
@@ -314,7 +368,9 @@ export default function Settings() {
                     </div>
                     <Switch
                       checked={settings.autoBlock}
-                      onCheckedChange={(checked) => updateSetting('autoBlock', checked)}
+                      onCheckedChange={(checked) =>
+                        updateSetting("autoBlock", checked)
+                      }
                     />
                   </div>
                 </CardContent>
@@ -347,10 +403,12 @@ export default function Settings() {
                     </div>
                     <Switch
                       checked={settings.biometricAuth}
-                      onCheckedChange={(checked) => updateSetting('biometricAuth', checked)}
+                      onCheckedChange={(checked) =>
+                        updateSetting("biometricAuth", checked)
+                      }
                     />
                   </div>
-                  
+
                   <div className="flex items-center justify-between">
                     <div className="space-y-0.5">
                       <Label className="text-base flex items-center gap-2">
@@ -363,10 +421,12 @@ export default function Settings() {
                     </div>
                     <Switch
                       checked={settings.voiceAuth}
-                      onCheckedChange={(checked) => updateSetting('voiceAuth', checked)}
+                      onCheckedChange={(checked) =>
+                        updateSetting("voiceAuth", checked)
+                      }
                     />
                   </div>
-                  
+
                   <div className="flex items-center justify-between">
                     <div className="space-y-0.5">
                       <Label className="text-base flex items-center gap-2">
@@ -379,7 +439,9 @@ export default function Settings() {
                     </div>
                     <Switch
                       checked={settings.geoTracking}
-                      onCheckedChange={(checked) => updateSetting('geoTracking', checked)}
+                      onCheckedChange={(checked) =>
+                        updateSetting("geoTracking", checked)
+                      }
                     />
                   </div>
                 </CardContent>
@@ -398,32 +460,48 @@ export default function Settings() {
                 <CardContent className="space-y-4">
                   <div className="space-y-3">
                     <div className="flex justify-between items-center">
-                      <span className="text-sm">Multi-factor Authentication</span>
-                      <Badge className="bg-neon-green text-background">Enabled</Badge>
+                      <span className="text-sm">
+                        Multi-factor Authentication
+                      </span>
+                      <Badge className="bg-neon-green text-background">
+                        Enabled
+                      </Badge>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-sm">Email Verification</span>
-                      <Badge className="bg-neon-green text-background">Verified</Badge>
+                      <Badge className="bg-neon-green text-background">
+                        Verified
+                      </Badge>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-sm">Voice Print</span>
-                      <Badge className="bg-neon-green text-background">Registered</Badge>
+                      <Badge className="bg-neon-green text-background">
+                        Registered
+                      </Badge>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-sm">Fingerprint</span>
-                      <Badge className="bg-neon-green text-background">Active</Badge>
+                      <Badge className="bg-neon-green text-background">
+                        Active
+                      </Badge>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-sm">Location Services</span>
-                      <Badge className="bg-neon-yellow text-background">Monitoring</Badge>
+                      <Badge className="bg-neon-yellow text-background">
+                        Monitoring
+                      </Badge>
                     </div>
                   </div>
-                  
+
                   <div className="pt-4 border-t border-border">
-                    <div className="text-sm text-muted-foreground mb-2">Security Score</div>
+                    <div className="text-sm text-muted-foreground mb-2">
+                      Security Score
+                    </div>
                     <div className="flex items-center space-x-3">
                       <Progress value={95} className="flex-1" />
-                      <span className="text-sm font-bold text-neon-green">95/100</span>
+                      <span className="text-sm font-bold text-neon-green">
+                        95/100
+                      </span>
                     </div>
                   </div>
                 </CardContent>
@@ -457,21 +535,25 @@ export default function Settings() {
                       </div>
                       <Switch
                         checked={settings.darkMode}
-                        onCheckedChange={(checked) => updateSetting('darkMode', checked)}
+                        onCheckedChange={(checked) =>
+                          updateSetting("darkMode", checked)
+                        }
                       />
                     </div>
-                    
+
                     <div className="space-y-2">
                       <Label>Dashboard Refresh Rate</Label>
                       <select className="w-full p-2 border border-border rounded-lg bg-background text-foreground">
                         <option value="5">5 seconds</option>
-                        <option value="10" selected>10 seconds</option>
+                        <option value="10" selected>
+                          10 seconds
+                        </option>
                         <option value="30">30 seconds</option>
                         <option value="60">1 minute</option>
                       </select>
                     </div>
                   </div>
-                  
+
                   <div className="space-y-4">
                     <div className="space-y-2">
                       <Label>Sound Alerts</Label>
@@ -481,12 +563,14 @@ export default function Settings() {
                         <option value="disabled">Disabled</option>
                       </select>
                     </div>
-                    
+
                     <div className="space-y-2">
                       <Label>Transaction Display</Label>
                       <select className="w-full p-2 border border-border rounded-lg bg-background text-foreground">
                         <option value="10">10 recent transactions</option>
-                        <option value="25" selected>25 recent transactions</option>
+                        <option value="25" selected>
+                          25 recent transactions
+                        </option>
                         <option value="50">50 recent transactions</option>
                         <option value="100">100 recent transactions</option>
                       </select>
@@ -510,18 +594,32 @@ export default function Settings() {
                   <CardContent>
                     <div className="space-y-3">
                       <div className="flex justify-between">
-                        <span className="text-sm text-muted-foreground">Chain Integrity</span>
-                        <Badge className={`${chainValid ? 'bg-neon-green' : 'bg-neon-red'} text-background`}>
-                          {chainValid ? 'Valid' : 'Invalid'}
+                        <span className="text-sm text-muted-foreground">
+                          Chain Integrity
+                        </span>
+                        <Badge
+                          className={`${chainValid ? "bg-neon-green" : "bg-neon-red"} text-background`}
+                        >
+                          {chainValid ? "Valid" : "Invalid"}
                         </Badge>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-sm text-muted-foreground">Total Blocks</span>
-                        <span className="text-sm font-medium">{blockchainStats?.totalBlocks || 0}</span>
+                        <span className="text-sm text-muted-foreground">
+                          Total Blocks
+                        </span>
+                        <span className="text-sm font-medium">
+                          {blockchainStats?.totalBlocks || 0}
+                        </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-sm text-muted-foreground">Chain Size</span>
-                        <span className="text-sm font-medium">{blockchainStats?.chainSize ? `${(blockchainStats.chainSize / 1024).toFixed(1)} KB` : '0 KB'}</span>
+                        <span className="text-sm text-muted-foreground">
+                          Chain Size
+                        </span>
+                        <span className="text-sm font-medium">
+                          {blockchainStats?.chainSize
+                            ? `${(blockchainStats.chainSize / 1024).toFixed(1)} KB`
+                            : "0 KB"}
+                        </span>
                       </div>
                     </div>
                   </CardContent>
@@ -537,16 +635,28 @@ export default function Settings() {
                   <CardContent>
                     <div className="space-y-3">
                       <div className="flex justify-between">
-                        <span className="text-sm text-muted-foreground">Blocked Txns</span>
-                        <span className="text-sm font-medium text-neon-red">{blockchainStats?.actionBreakdown?.block || 0}</span>
+                        <span className="text-sm text-muted-foreground">
+                          Blocked Txns
+                        </span>
+                        <span className="text-sm font-medium text-neon-red">
+                          {blockchainStats?.actionBreakdown?.block || 0}
+                        </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-sm text-muted-foreground">Approved Txns</span>
-                        <span className="text-sm font-medium text-neon-green">{blockchainStats?.actionBreakdown?.approve || 0}</span>
+                        <span className="text-sm text-muted-foreground">
+                          Approved Txns
+                        </span>
+                        <span className="text-sm font-medium text-neon-green">
+                          {blockchainStats?.actionBreakdown?.approve || 0}
+                        </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-sm text-muted-foreground">Flagged Txns</span>
-                        <span className="text-sm font-medium text-neon-yellow">{blockchainStats?.actionBreakdown?.flag || 0}</span>
+                        <span className="text-sm text-muted-foreground">
+                          Flagged Txns
+                        </span>
+                        <span className="text-sm font-medium text-neon-yellow">
+                          {blockchainStats?.actionBreakdown?.flag || 0}
+                        </span>
                       </div>
                     </div>
                   </CardContent>
@@ -560,16 +670,20 @@ export default function Settings() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3">
-                    <Button 
+                    <Button
                       onClick={validateBlockchain}
                       disabled={loading}
                       className="w-full bg-neon-green hover:bg-neon-green/80 text-background"
                       size="sm"
                     >
-                      {loading ? <RefreshCw className="h-4 w-4 mr-2 animate-spin" /> : <CheckCircle className="h-4 w-4 mr-2" />}
+                      {loading ? (
+                        <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+                      ) : (
+                        <CheckCircle className="h-4 w-4 mr-2" />
+                      )}
                       Validate Chain
                     </Button>
-                    <Button 
+                    <Button
                       onClick={exportBlockchain}
                       variant="outline"
                       className="w-full border-neon-cyan text-neon-cyan hover:bg-neon-cyan hover:text-background"
@@ -578,7 +692,7 @@ export default function Settings() {
                       <Download className="h-4 w-4 mr-2" />
                       Export Chain
                     </Button>
-                    <Button 
+                    <Button
                       onClick={fetchBlockchain}
                       variant="outline"
                       className="w-full border-neon-purple text-neon-purple hover:bg-neon-purple hover:text-background"
@@ -604,24 +718,41 @@ export default function Settings() {
                 <CardContent>
                   <div className="space-y-3">
                     {blockchain.map((block, index) => (
-                      <div key={block.id} className="flex items-center justify-between p-3 border border-border/50 rounded-lg bg-card/30 backdrop-blur-sm">
+                      <div
+                        key={block.id}
+                        className="flex items-center justify-between p-3 border border-border/50 rounded-lg bg-card/30 backdrop-blur-sm"
+                      >
                         <div className="flex items-center space-x-4">
-                          <div className="text-xs text-muted-foreground">#{blockchain.length - index}</div>
-                          <div className="flex flex-col">
-                            <div className="font-mono text-sm text-foreground">{block.blockHash.substring(0, 16)}...</div>
-                            <div className="text-xs text-muted-foreground">{block.transactionId}</div>
+                          <div className="text-xs text-muted-foreground">
+                            #{blockchain.length - index}
                           </div>
                           <div className="flex flex-col">
-                            <div className={`text-sm font-medium ${getBlockActionColor(block.data.action)}`}>
+                            <div className="font-mono text-sm text-foreground">
+                              {block.blockHash.substring(0, 16)}...
+                            </div>
+                            <div className="text-xs text-muted-foreground">
+                              {block.transactionId}
+                            </div>
+                          </div>
+                          <div className="flex flex-col">
+                            <div
+                              className={`text-sm font-medium ${getBlockActionColor(block.data.action)}`}
+                            >
                               {block.data.action.toUpperCase()}
                             </div>
-                            <div className="text-xs text-muted-foreground">{block.data.merchant}</div>
+                            <div className="text-xs text-muted-foreground">
+                              {block.data.merchant}
+                            </div>
                           </div>
                         </div>
                         <div className="flex items-center space-x-4">
                           <div className="text-center">
-                            <div className="text-sm font-medium text-foreground">₹{block.data.amount.toLocaleString()}</div>
-                            <div className="text-xs text-muted-foreground">Risk: {block.data.riskScore}</div>
+                            <div className="text-sm font-medium text-foreground">
+                              ₹{block.data.amount.toLocaleString()}
+                            </div>
+                            <div className="text-xs text-muted-foreground">
+                              Risk: {block.data.riskScore}
+                            </div>
                           </div>
                           <div className="text-xs text-muted-foreground">
                             {new Date(block.timestamp).toLocaleString()}
@@ -653,7 +784,9 @@ export default function Settings() {
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <div className="text-sm text-muted-foreground">Version</div>
+                      <div className="text-sm text-muted-foreground">
+                        Version
+                      </div>
                       <div className="font-medium">v2.1 CYBER</div>
                     </div>
                     <div>
@@ -661,31 +794,43 @@ export default function Settings() {
                       <div className="font-medium">2024.01.15</div>
                     </div>
                     <div>
-                      <div className="text-sm text-muted-foreground">AI Model</div>
+                      <div className="text-sm text-muted-foreground">
+                        AI Model
+                      </div>
                       <div className="font-medium">FraudNet v3.2</div>
                     </div>
                     <div>
-                      <div className="text-sm text-muted-foreground">Accuracy</div>
+                      <div className="text-sm text-muted-foreground">
+                        Accuracy
+                      </div>
                       <div className="font-medium text-neon-green">94.7%</div>
                     </div>
                   </div>
-                  
+
                   <div className="pt-4 space-y-2">
                     <div className="flex justify-between items-center">
                       <span className="text-sm">Database</span>
-                      <Badge className="bg-neon-green text-background">Connected</Badge>
+                      <Badge className="bg-neon-green text-background">
+                        Connected
+                      </Badge>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-sm">SMTP Service</span>
-                      <Badge className="bg-neon-green text-background">Active</Badge>
+                      <Badge className="bg-neon-green text-background">
+                        Active
+                      </Badge>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-sm">WhatsApp API</span>
-                      <Badge className="bg-neon-yellow text-background">Testing</Badge>
+                      <Badge className="bg-neon-yellow text-background">
+                        Testing
+                      </Badge>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-sm">Blockchain</span>
-                      <Badge className="bg-neon-green text-background">Validated</Badge>
+                      <Badge className="bg-neon-green text-background">
+                        Validated
+                      </Badge>
                     </div>
                   </div>
                 </CardContent>
@@ -706,22 +851,22 @@ export default function Settings() {
                     <RefreshCw className="h-4 w-4 mr-2" />
                     Refresh ML Model
                   </Button>
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     className="w-full border-neon-green text-neon-green hover:bg-neon-green hover:text-background"
                   >
                     <Download className="h-4 w-4 mr-2" />
                     Export Transaction Data
                   </Button>
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     className="w-full border-neon-yellow text-neon-yellow hover:bg-neon-yellow hover:text-background"
                   >
                     <BarChart3 className="h-4 w-4 mr-2" />
                     Generate Security Report
                   </Button>
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     className="w-full border-neon-purple text-neon-purple hover:bg-neon-purple hover:text-background"
                   >
                     <Smartphone className="h-4 w-4 mr-2" />
