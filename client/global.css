@@ -110,6 +110,24 @@
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* Fraud Detection Theme - Dark */
+    --fraud-high-risk: 0 62.8% 30.6%;
+    --fraud-medium-risk: 32 81% 29%;
+    --fraud-low-risk: 48 84% 29%;
+    --fraud-safe: 142 69% 26%;
+    --fraud-alert: 348 70% 35%;
+    --fraud-warning: 25 81% 35%;
+
+    /* Trust Score Colors - Dark */
+    --trust-high: 134 56% 28%;
+    --trust-medium: 43 64% 32%;
+    --trust-low: 0 59% 35%;
+
+    /* Security Theme - Dark */
+    --security-primary: 221 83% 53%;
+    --security-secondary: 262 83% 58%;
+    --security-accent: 200 98% 39%;
   }
 }
 
