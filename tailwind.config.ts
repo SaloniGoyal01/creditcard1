@@ -57,6 +57,24 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        fraud: {
+          "high-risk": "hsl(var(--fraud-high-risk))",
+          "medium-risk": "hsl(var(--fraud-medium-risk))",
+          "low-risk": "hsl(var(--fraud-low-risk))",
+          "safe": "hsl(var(--fraud-safe))",
+          "alert": "hsl(var(--fraud-alert))",
+          "warning": "hsl(var(--fraud-warning))",
+        },
+        trust: {
+          "high": "hsl(var(--trust-high))",
+          "medium": "hsl(var(--trust-medium))",
+          "low": "hsl(var(--trust-low))",
+        },
+        security: {
+          "primary": "hsl(var(--security-primary))",
+          "secondary": "hsl(var(--security-secondary))",
+          "accent": "hsl(var(--security-accent))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
